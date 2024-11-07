@@ -172,7 +172,7 @@ namespace Bloodlines
         {
             Skin skin = new();
 
-            skin.id = (SkinType)model.Id;
+            //skin.id = (SkinType)model.Id;
             skin.name = model.Name;
             skin.textureName = model.TextureName;
             skin.spriteName = model.SpriteName;

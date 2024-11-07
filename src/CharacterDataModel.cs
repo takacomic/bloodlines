@@ -28,6 +28,13 @@ namespace Bloodlines.src
         public string PortraitPath => Path.Combine(BaseDirectory, Character.PortraitName);
 
         public string SkinPath(int skinId) => Path.Combine(BaseDirectory, Character.Skins[skinId].SpriteName);
+        public string SkinPath(SkinType type) => Path.Combine(BaseDirectory, Character.Skins[SkinTypeInt(type)].SpriteName);
+
+        public int SkinTypeInt(SkinType type)
+        {
+            if (type == SkinType.LEGACY) return 1;
+            return 0;
+        }
 
         public SkinObjectModelv0_2 Skin(int skinId) => Character.Skins[skinId];
 

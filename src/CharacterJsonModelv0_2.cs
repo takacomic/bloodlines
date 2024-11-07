@@ -290,7 +290,7 @@ namespace Bloodlines
 
     public class SkinObjectModelv0_2
     {
-        [JsonProperty("id")]
+        [JsonProperty("skinType")]
         public SkinType Id { get; set; }
 
         [JsonProperty("name")]
@@ -319,7 +319,7 @@ namespace Bloodlines
         {
             Skin skin = new();
 
-            skin.id = (SkinType)model.Id;
+            skin.skinType = (SkinType)model.Id;
             skin.name = model.Name;
             skin.textureName = model.TextureName;
             skin.spriteName = model.SpriteName;
@@ -333,7 +333,7 @@ namespace Bloodlines
         {
             SkinObjectModelv0_2 model = new();
 
-            model.Id = skin.id;
+            model.Id = skin.skinType;
             model.Name = skin.name;
             model.TextureName = skin.textureName;
             model.SpriteName = skin.spriteName;
