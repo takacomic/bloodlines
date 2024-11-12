@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Bloodlines.src.DataModels;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 

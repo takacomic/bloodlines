@@ -1,4 +1,5 @@
-﻿using Bloodlines.src;
+﻿using Bloodlines.src.DataModels;
+using Bloodlines.src.JsonModels;
 using MelonLoader;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -19,6 +20,10 @@ namespace Bloodlines
         public abstract Type CharacterFileVersion();
 
         public abstract List<CharacterDataModelWrapper> GetCharacterList();
+
+        public abstract List<SpriteDataModelWrapper> GetSpriteList();
+
+        public abstract List<AnimDataModelWrapper> GetAnimList();
     }
 
     [Obsolete("CharacterFileModelV0_1 is deprecated, useCharacterFileModelV0_2 instead.")]
@@ -31,6 +36,12 @@ namespace Bloodlines
 
         [JsonProperty("character")]
         public List<CharacterJsonModelv0_1> Character { get; set; }
+
+        [JsonProperty("spriteData")]
+        public List<SpriteJsonModelv0_3> SpriteData { get; set; }
+
+        [JsonProperty("animData")]
+        public List<AnimJsonModelv0_3> AnimData { get; set; }
 
         public CharacterFileModelV0_1() : base() { }
 
@@ -69,14 +80,14 @@ namespace Bloodlines
 
                             foreach (SkinObjectModel os in old.Skins)
                             {
-                                SkinObjectModelv0_2 ns = new()
+                                SkinObjectModelv0_3 ns = new()
                                 {
-                                    Id = (Il2CppVampireSurvivors.Data.SkinType)os.Id,
+                                    //Id = (Il2CppVampireSurvivors.Data.SkinType)os.Id,
                                     Name = os.Name,
                                     SpriteName = os.SpriteName,
                                     TextureName = os.TextureName,
                                     Unlocked = os.Unlocked,
-                                    frames = new()
+                                    //frames = new()
                                 };
                             }
                         }
@@ -101,13 +112,13 @@ namespace Bloodlines
 
                     if (!model.Skins.Any())
                     {
-                        SkinObjectModelv0_2 skin = new();
-                        skin.Id = 0;
+                        SkinObjectModelv0_3 skin = new();
+                        //skin.Id = 0;
                         skin.Name = "Default";
                         skin.SpriteName = model.SpriteName;
                         skin.TextureName = "characters";
                         skin.Unlocked = true;
-                        skin.frames = new();
+                        //skin.frames = new();
 
                         model.Skins.Add(skin);
                     }
@@ -122,9 +133,27 @@ namespace Bloodlines
 
             return characterDatas;
         }
+
+        public override List<SpriteDataModelWrapper> GetSpriteList()
+        {
+            List<SpriteDataModelWrapper> spriteDatas = new();
+
+            SpriteData.ForEach((c) => spriteDatas.Add(c.toSpriteDataModel()));
+
+            return spriteDatas;
+        }
+
+        public override List<AnimDataModelWrapper> GetAnimList()
+        {
+            List<AnimDataModelWrapper> animDatas = new();
+
+            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
+
+            return animDatas;
+        }
     }
 
-    // Mark with [Obsolete("CharacterFileModelV0_2 is deprecated, use CharacterFileV* instead.")] when I add a new version.
+    [Obsolete("CharacterFileModelV0_2 is deprecated, use CharacterFileV0_3 instead.")]
     public class CharacterFileModelV0_2 : BaseCharacterFileModel
     {
         [JsonIgnore]
@@ -134,6 +163,12 @@ namespace Bloodlines
 
         [JsonProperty("characters")]
         public List<CharacterJsonModelv0_2> Characters { get; set; }
+
+        [JsonProperty("spriteData")]
+        public List<SpriteJsonModelv0_3> SpriteData { get; set; }
+
+        [JsonProperty("animData")]
+        public List<AnimJsonModelv0_3> AnimData { get; set; }
 
         [JsonIgnore]
         public string CharacterBaseDir { get; set; }
@@ -149,6 +184,76 @@ namespace Bloodlines
             Characters.ForEach((c) => characterDatas.Add(c.toCharacterDataModel()));
 
             return characterDatas;
+        }
+
+        public override List<SpriteDataModelWrapper> GetSpriteList()
+        {
+            List<SpriteDataModelWrapper> spriteDatas = new();
+
+            SpriteData.ForEach((c) => spriteDatas.Add(c.toSpriteDataModel()));
+
+            return spriteDatas;
+        }
+
+        public override List<AnimDataModelWrapper> GetAnimList()
+        {
+            List<AnimDataModelWrapper> animDatas = new();
+
+            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
+
+            return animDatas;
+        }
+    }
+
+    // Mark with [Obsolete("CharacterFileModelV0_3 is deprecated, use CharacterFileV* instead.")] when I add a new version.
+    public class CharacterFileModelV0_3 : BaseCharacterFileModel
+    {
+        [JsonIgnore]
+        public const string _version = "0.3";
+
+        public override Version Version { get; set; } = new Version("0.3");
+
+        [JsonProperty("characters")]
+        public List<CharacterJsonModelv0_3> Characters { get; set; }
+
+        [JsonProperty("spriteData")]
+        public List<SpriteJsonModelv0_3> SpriteData { get; set; }
+
+        [JsonProperty("animData")]
+        public List<AnimJsonModelv0_3> AnimData { get; set; }
+
+        [JsonIgnore]
+        public string CharacterBaseDir { get; set; }
+
+        public CharacterFileModelV0_3() : base() { }
+
+        public override Type CharacterFileVersion() => typeof(CharacterFileModelV0_3);
+
+        public override List<CharacterDataModelWrapper> GetCharacterList()
+        {
+            List<CharacterDataModelWrapper> characterDatas = new();
+
+            Characters.ForEach((c) => characterDatas.Add(c.toCharacterDataModel()));
+
+            return characterDatas;
+        }
+
+        public override List<SpriteDataModelWrapper> GetSpriteList()
+        {
+            List<SpriteDataModelWrapper> spriteDatas = new();
+
+            SpriteData.ForEach((c) => spriteDatas.Add(c.toSpriteDataModel()));
+
+            return spriteDatas;
+        }
+
+        public override List<AnimDataModelWrapper> GetAnimList()
+        {
+            List<AnimDataModelWrapper> animDatas = new();
+
+            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
+
+            return animDatas;
         }
     }
 }

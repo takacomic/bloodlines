@@ -1,4 +1,4 @@
-﻿using Bloodlines.src;
+﻿using Bloodlines.src.DataModels;
 using Bloodlines.src.json;
 using Il2CppVampireSurvivors.Data;
 using Il2CppVampireSurvivors.Data.Characters;
@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Text.Json;
 using UnityEngine;
 
-namespace Bloodlines
+namespace Bloodlines.src.JsonModels
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class CharacterJsonModelv0_2
@@ -39,7 +39,7 @@ namespace Bloodlines
         public string SpriteName { get; set; }
 
         [JsonProperty("skins")]
-        public List<SkinObjectModelv0_2> Skins { get; set; }
+        public List<SkinObjectModelv0_3> Skins { get; set; }
 
         [JsonProperty("currentSkinIndex")]
         public int CurrentSkinIndex { get; set; }
@@ -66,7 +66,6 @@ namespace Bloodlines
         public StatModifierJsonModelv0_2 OnEveryLevelUp { get; set; }
 
         [JsonProperty("bodyOffset")]
-        [JsonConverter(typeof(Vector2JsonConverter))]
         public Vector2 BodyOffset { get; set; }
 
         [JsonProperty("portraitName")]
@@ -92,7 +91,7 @@ namespace Bloodlines
                 if (c.GetType().GetProperty(prop.Name) == null)
                 {
 #if DEBUG
-                        Melon<BloodlinesMod>.Logger.Msg($"No match for {prop.Name}");
+                    Melon<BloodlinesMod>.Logger.Msg($"No match for {prop.Name}");
 #endif // DEBUG
                     continue;
                 }
@@ -116,7 +115,7 @@ namespace Bloodlines
                 if (c.GetType().GetProperty(prop.Name) == null && prop.Name != "StatModifiers")
                 {
 #if DEBUG
-                        Melon<BloodlinesMod>.Logger.Msg($"No match for {prop.Name}");
+                    Melon<BloodlinesMod>.Logger.Msg($"No match for {prop.Name}");
 #endif // DEBUG
 
                     continue;
@@ -165,7 +164,7 @@ namespace Bloodlines
         public float MoveSpeed { get; set; }
 
         [JsonProperty("power")]
-        public float Power { get; set; }
+        public double Power { get; set; }
 
         [JsonProperty("area")]
         public float Area { get; set; }
@@ -223,6 +222,7 @@ namespace Bloodlines
             ModifierStats m = new();
 
             PropertyInfo[] myProps = GetType().GetProperties();
+            List<string> statsToFloat = new() { "Power" };
 
             foreach (PropertyInfo prop in GetType().GetProperties())
             {
@@ -234,7 +234,14 @@ namespace Bloodlines
                     }
 
                     var value = prop.GetValue(this, null);
-                    m.GetType().GetProperty(prop.Name).SetValue(m, value);
+                    if (statsToFloat.Contains(prop.Name))
+                    {
+                        m.GetType().GetProperty(prop.Name).SetValue(m, Convert.ToSingle(value));
+                    }
+                    else
+                    {
+                        m.GetType().GetProperty(prop.Name).SetValue(m, value);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -291,7 +298,7 @@ namespace Bloodlines
     public class SkinObjectModelv0_2
     {
         [JsonProperty("skinType")]
-        public SkinType Id { get; set; }
+        public SkinType SkinType { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -319,7 +326,7 @@ namespace Bloodlines
         {
             Skin skin = new();
 
-            skin.skinType = (SkinType)model.Id;
+            skin.skinType = model.SkinType;
             skin.name = model.Name;
             skin.textureName = model.TextureName;
             skin.spriteName = model.SpriteName;
@@ -333,7 +340,7 @@ namespace Bloodlines
         {
             SkinObjectModelv0_2 model = new();
 
-            model.Id = skin.skinType;
+            model.SkinType = skin.skinType;
             model.Name = skin.name;
             model.TextureName = skin.textureName;
             model.SpriteName = skin.spriteName;

@@ -1,4 +1,4 @@
-﻿using Bloodlines.src;
+﻿using Bloodlines.src.DataModels;
 using Il2CppVampireSurvivors.Data;
 using MelonLoader;
 using Newtonsoft.Json;
@@ -16,6 +16,9 @@ namespace Bloodlines
     {
         public List<CharacterDataModelWrapper> characters { get; protected set; } = new();
         public Dictionary<CharacterType, CharacterDataModelWrapper> characterDict { get; set; } = new();
+        public List<SpriteDataModelWrapper> sprites { get; protected set; } = new();
+        public List<AnimDataModelWrapper> anims { get; protected set; } = new();
+
         readonly string ZipPath;
         readonly string ExtractPath;
         readonly string SavePackPath;
@@ -277,6 +280,18 @@ namespace Bloodlines
                 data.BaseDirectory = Path.GetDirectoryName(filePath);
                 characters.Add(data);
             });
+
+            characterDto.GetSpriteList().ForEach((data) =>
+            {
+                data.BaseDirectory = Path.GetDirectoryName(filePath);
+                sprites.Add(data);
+            });
+
+            characterDto.GetAnimList().ForEach((data) =>
+            {
+                data.BaseDirectory = Path.GetDirectoryName(filePath);
+                anims.Add(data);
+            });
         }
 
         BaseCharacterFileModel GetFileDto(string json, string filePath, out Type type)
@@ -317,6 +332,19 @@ namespace Bloodlines
                     {
                         type = typeof(CharacterFileModelV0_2);
                         CharacterFileModelV0_2? c = JsonConvert.DeserializeObject<CharacterFileModelV0_2>(json);
+
+                        if (c == null)
+                        {
+                            break;
+                        }
+
+                        return c;
+                    }
+                case CharacterFileModelV0_3._version:
+                    {
+                        Melon<BloodlinesMod>.Logger.Msg($"in CharacterModelV3");
+                        type = typeof(CharacterFileModelV0_3);
+                        CharacterFileModelV0_3? c = JsonConvert.DeserializeObject<CharacterFileModelV0_3>(json);
 
                         if (c == null)
                         {

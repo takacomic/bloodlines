@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Bloodlines
+namespace Bloodlines.src.JsonModels
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class CharacterJsonModelv0_1
