@@ -42,7 +42,7 @@ namespace Bloodlines
                 Melon<BloodlinesMod>.Logger
                     .Error($"Submit an issue for this exception including all of the stacktrace and extra data.");
 
-                Melon<BloodlinesMod>.Logger.Error($"To: https://github.com/nwfistere/bloodlines/issues");
+                Melon<BloodlinesMod>.Logger.Error($"To: https://github.com/takacomic/bloodlines/issues");
 
                 if (e.Data.Count > 0)
                 {

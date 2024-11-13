@@ -1,5 +1,4 @@
 ﻿using Bloodlines.src.DataModels;
-using Bloodlines.src.json;
 using Il2CppVampireSurvivors.Data;
 using Il2CppVampireSurvivors.Data.Characters;
 using Il2CppVampireSurvivors.Objects;
@@ -50,8 +49,8 @@ namespace Bloodlines.src.JsonModels
         [JsonConverter(typeof(StringEnumConverter))]
         public SkinType CurrentSkin { get; set; }
 
-        [JsonProperty("customStartingWeapon")]
-        public string CustomStartingWeapon { get; set; }
+        //[JsonProperty("customStartingWeapon")]
+        //public string CustomStartingWeapon { get; set; }
 
         //[JsonProperty("debugEnemies")]
         //public float DebugEnemies { get; set; }
@@ -94,7 +93,7 @@ namespace Bloodlines.src.JsonModels
         //public int NameIndex { get; set; }
 
         //[JsonProperty("noHurt")]
-        //public bool NoHurt { get; set; }
+        //public bool NoHurt { get; set; }*/
 
         [JsonProperty("onEveryLevelUp")]
         public StatModifierJsonModelv0_3 OnEveryLevelUp { get; set; }
@@ -112,16 +111,15 @@ namespace Bloodlines.src.JsonModels
         [DefaultValue(null)]
         public List<RacingOffsetData> RacingOffsets { get; set; }
 
-        [JsonProperty("requiresRelic")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        [DefaultValue(null)]
-        public ItemType RequiresRelic { get; set; }
+        //[JsonProperty("requiresRelic")]
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public ItemType RequiresRelic { get; set; }
 
         [JsonProperty("showcase")]
         public List<WeaponType> Showcase { get; set; }
 
-        //[JsonProperty("skinLangSheet")]
-        //public string SkinLangSheet { get; set; }
+        [JsonProperty("skinLangSheet")]
+        public string SkinLangSheet { get; set; }
 
         [JsonProperty("skins")]
         public List<SkinObjectModelv0_3> Skins { get; set; }
@@ -443,13 +441,13 @@ namespace Bloodlines.src.JsonModels
         [JsonProperty("duration")]
         public float Duration { get; set; }
 
-        /*[JsonProperty("exAccesories")]
+        [JsonProperty("exAccesories")]
         [DefaultValue(null)]
         public List<string> ExAccessories { get; set; }
 
         [JsonProperty("exWeapons")]
         [DefaultValue(null)]
-        public List<string> ExWeapons { get; set; }*/
+        public List<string> ExWeapons { get; set; }
 
         [JsonProperty("greed")]
         public float Greed { get; set; }
@@ -457,16 +455,16 @@ namespace Bloodlines.src.JsonModels
         [JsonProperty("growth")]
         public float Growth { get; set; }
 
-        /*[JsonProperty("headOffsets")]
+        [JsonProperty("headOffsets")]
         [DefaultValue(null)]
-        public Il2CppSystem.Collections.Generic.List<Vector2> HeadOffsets { get; set; }*/
+        public Il2CppSystem.Collections.Generic.List<Vector2> HeadOffsets { get; set; }
 
         [JsonProperty("hidden")]
         public bool Hidden { get; set; }
 
-        /*[JsonProperty("hiddenWeapons")]
+        [JsonProperty("hiddenWeapons")]
         [DefaultValue(null)]
-        public Il2CppSystem.Collections.Generic.List<string> HiddenWeapons { get; set; }*/
+        public Il2CppSystem.Collections.Generic.List<string> HiddenWeapons { get; set; }
 
         [JsonProperty("luck")]
         public float Luck { get; set; }
@@ -526,10 +524,10 @@ namespace Bloodlines.src.JsonModels
         [JsonProperty("spriteName")]
         public string SpriteName { get; set; }
 
-        /*[JsonProperty("startingWeapon")]
+        [JsonProperty("startingWeapon")]
         [JsonConverter(typeof(StringEnumConverter))]
         [DefaultValue(null)]
-        public Il2CppSystem.Nullable<WeaponType> StartingWeapon { get; set; }*/
+        public Il2CppSystem.Nullable<WeaponType> StartingWeapon { get; set; }
 
         [JsonProperty("suffix")]
         public string Suffix { get; set; }
@@ -546,10 +544,10 @@ namespace Bloodlines.src.JsonModels
         public static implicit operator Skin(SkinObjectModelv0_3 model)
         {
             Skin skin = new();
-            /*Il2CppSystem.Collections.Generic.List<string> exAccessories = new Il2CppSystem.Collections.Generic.List<string>();
+            Il2CppSystem.Collections.Generic.List<string> exAccessories = new Il2CppSystem.Collections.Generic.List<string>();
             Il2CppSystem.Collections.Generic.List<string> exWeapons = new Il2CppSystem.Collections.Generic.List<string>();
             foreach (var a in model.ExAccessories) { exAccessories.Add(a); }
-            foreach (var a in model.ExWeapons) { exWeapons.Add(a); }*/
+            foreach (var a in model.ExWeapons) { exWeapons.Add(a); }
 
             skin.alwaysHidden = model.AlwaysHidden;
             skin.amount = model.Amount;
@@ -562,13 +560,13 @@ namespace Bloodlines.src.JsonModels
             skin.curse = model.Curse;
             skin.description = model.Description;
             skin.duration = model.Duration;
-           /*skin.exAccessories = exAccessories;
-            skin.exWeapons = exWeapons;*/
+            skin.exAccessories = exAccessories;
+            skin.exWeapons = exWeapons;
             skin.greed = model.Greed;
             skin.growth = model.Growth;
-            //skin.headOffsets = model.HeadOffsets;
+            skin.headOffsets = model.HeadOffsets;
             skin.hidden = model.Hidden;
-            //skin.hiddenWeapons = model.HiddenWeapons;
+            skin.hiddenWeapons = model.HiddenWeapons;
             skin.luck = model.Luck;
             skin.magnet = model.Magnet;
             skin.maxHp = model.MaxHp;
@@ -588,7 +586,7 @@ namespace Bloodlines.src.JsonModels
             skin.speed = model.Speed;
             skin.spriteAnims = model.SpriteAnims;
             skin.spriteName = model.SpriteName;
-            //skin.startingWeapon = model.StartingWeapon;
+            skin.startingWeapon = model.StartingWeapon;
             skin.suffix = model.Suffix;
             skin.textureName = model.TextureName;
             skin.unlocked = model.Unlocked;
@@ -600,10 +598,10 @@ namespace Bloodlines.src.JsonModels
         public static implicit operator SkinObjectModelv0_3(Skin skin)
         {
             SkinObjectModelv0_3 model = new();
-            //List<string> exAccessories = new List<string>();
-            //List<string> exWeapons = new List<string>();
-            //foreach (var a in skin.exAccessories) { exAccessories.Add(a); }
-            //foreach (var a in skin.exWeapons) { exWeapons.Add(a); }
+            List<string> exAccessories = new List<string>();
+            List<string> exWeapons = new List<string>();
+            foreach (var a in skin.exAccessories) { exAccessories.Add(a); }
+            foreach (var a in skin.exWeapons) { exWeapons.Add(a); }
 
             model.AlwaysHidden = skin.alwaysHidden;
             model.Amount = skin.amount;
@@ -617,13 +615,13 @@ namespace Bloodlines.src.JsonModels
             //model.CustomStartingWeapon;
             model.Description = skin.description;
             model.Duration = skin.duration;
-            //model.ExAccessories = exAccessories;
-            //model.ExWeapons = exWeapons;
+            model.ExAccessories = exAccessories;
+            model.ExWeapons = exWeapons;
             model.Greed = skin.greed;
             model.Growth = skin.growth;
-            //model.HeadOffsets = skin.headOffsets;
+            model.HeadOffsets = skin.headOffsets;
             model.Hidden = skin.hidden;
-            //model.HiddenWeapons = skin.hiddenWeapons;
+            model.HiddenWeapons = skin.hiddenWeapons;
             model.Luck = skin.luck;
             model.Magnet = skin.magnet;
             model.MaxHp = skin.maxHp;
@@ -643,7 +641,7 @@ namespace Bloodlines.src.JsonModels
             model.Speed = skin.speed;
             model.SpriteAnims = skin.spriteAnims;
             model.SpriteName = skin.spriteName;
-            //model.StartingWeapon = skin.startingWeapon;
+            model.StartingWeapon = skin.startingWeapon;
             model.Suffix = skin.suffix;
             model.TextureName = skin.textureName;
             model.Unlocked = skin.unlocked;

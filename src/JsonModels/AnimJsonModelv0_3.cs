@@ -1,18 +1,10 @@
 ﻿using Bloodlines.src.DataModels;
-using Bloodlines.src.json;
-using Il2CppVampireSurvivors.Data;
-using Il2CppVampireSurvivors.Data.Characters;
-using Il2CppVampireSurvivors.Objects;
 using MelonLoader;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using UnityEngine;
 
 namespace Bloodlines.src.JsonModels
 {

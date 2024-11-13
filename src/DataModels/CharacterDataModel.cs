@@ -159,6 +159,10 @@ namespace Bloodlines.src.DataModels
         [DefaultValue(null)]
         public List<string> HiddenWeapons { get; set; }
 
+        [JsonProperty("hideWeaponIcon")]
+        [DefaultValue(false)]
+        public bool HidenWeaponIcon { get; set; }
+
         [JsonProperty("invulTimeBonus")]
         public int InvulTimeBonus { get; set; }
 
@@ -209,16 +213,18 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("regen")]
         public float Regen { get; set; }
 
-        [JsonProperty("requiresRelic")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        [DefaultValue(null)]
-        public ItemType RequiresRelic { get; set; }
+        //[JsonProperty("requiresRelic")]
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public ItemType RequiresRelic { get; set; }
 
         [JsonProperty("rerolls")]
         public float Rerolls { get; set; }
 
         [JsonProperty("revivals")]
         public double Revivals { get; set; }
+
+        [JsonProperty("secret")]
+        public bool Secret { get; set; }
 
         [JsonProperty("shields")]
         public float Shields { get; set; }

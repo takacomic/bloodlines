@@ -1,5 +1,4 @@
 ﻿using Bloodlines.src.DataModels;
-using Bloodlines.src.json;
 using Il2CppVampireSurvivors.Data;
 using Il2CppVampireSurvivors.Data.Characters;
 using Il2CppVampireSurvivors.Objects;
@@ -39,7 +38,7 @@ namespace Bloodlines.src.JsonModels
         public string SpriteName { get; set; }
 
         [JsonProperty("skins")]
-        public List<SkinObjectModelv0_3> Skins { get; set; }
+        public List<SkinObjectModelv0_2> Skins { get; set; }
 
         [JsonProperty("currentSkinIndex")]
         public int CurrentSkinIndex { get; set; }
@@ -108,6 +107,8 @@ namespace Bloodlines.src.JsonModels
                 }
             }
 
+            Melon<BloodlinesMod>.Logger.Msg($"PastStatProps");
+
             PropertyInfo[] myProps = GetType().GetProperties();
 
             foreach (PropertyInfo prop in myProps)
@@ -127,10 +128,12 @@ namespace Bloodlines.src.JsonModels
                 {
                     foreach (StatModifierJsonModelv0_2 statMod in StatModifiers.Skip(1))
                         modelWrapper.CharacterSettings.Add(statMod.toCharacterDataModel());
+                    Melon<BloodlinesMod>.Logger.Msg($"Past Stats Mod 2");
                 }
                 else if (prop.Name == "OnEveryLevelUp" && OnEveryLevelUp != null)
                 {
                     c.OnEveryLevelUp = OnEveryLevelUp.toModifierStat();
+                    Melon<BloodlinesMod>.Logger.Msg($"Past OnEveryLevelUp");
                 }
                 else
                 {

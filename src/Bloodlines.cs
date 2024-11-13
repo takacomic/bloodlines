@@ -14,19 +14,15 @@ using Il2CppVampireSurvivors.Objects.Characters;
 using Il2CppVampireSurvivors.Objects.Items;
 using Il2CppVampireSurvivors.Objects.Pickups;
 using Il2CppVampireSurvivors.UI;
-using Il2CppI2.Loc;
 using MelonLoader;
 using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using UnityEngine;
-using static MelonLoader.MelonLogger;
 using Il2Generic = Il2CppSystem.Collections.Generic;
-using Il2CppVampireSurvivors.Data.Weapons;
 
 namespace Bloodlines
 {
@@ -36,7 +32,7 @@ namespace Bloodlines
         public const string Description = "Easily add custom characters!";
         public const string Author = "Nick, Takacomic";
         public const string Company = "CorruptedInfluences";
-        public const string Version = "0.2.2";
+        public const string Version = "0.3.0";
         public const string Download = "https://github.com/takacomic/bloodlines";
     }
 
@@ -49,14 +45,6 @@ namespace Bloodlines
 
         static DataManager dataManager;
         static GameManager gameManager;
-
-        public static bool isDebug()
-        {
-#if DEBUG
-            return true;
-#endif
-            return false;
-        }
 
         public override void OnInitializeMelon()
         {
@@ -73,8 +61,7 @@ namespace Bloodlines
         public static CharacterManager getCharacterManager() => Melon<BloodlinesMod>.Instance.manager;
 
         public static bool isCustomCharacter(CharacterType characterType)
-        {
-            return getCharacterManager().characterDict.ContainsKey(characterType);
+        {            return getCharacterManager().characterDict.ContainsKey(characterType);
         }
 
         [HarmonyPatch("Il2CppInterop.HarmonySupport.Il2CppDetourMethodPatcher", "ReportException")]
@@ -110,16 +97,13 @@ namespace Bloodlines
         }
 
         public static Timer _Timer;
-
+#if DEBUG
         public static void TimerCallback(object stateInfo)
         {
             if (gameManager != null && gameManager.PlayerOne != null && gameManager.PlayerOne.PlayerStats != null)
             {
                 PlayerModifierStats stats = gameManager.PlayerOne.PlayerStats;
                 PropertyInfo[] statsProps = stats.GetType().GetProperties();
-                CharacterData characterData = gameManager.PlayerOne.CurrentSkinData;
-                PropertyInfo[] dataProps = characterData.GetType().GetProperties();
-                //System.Collections.Generic.List<string> ignoreFileds = new() { "ObjectClass", "Pointer", "WasCollected"/*, "walkFrameRate", "startFrameCount", "zeroPad", "frameRate", "bodyOffset"*/, "requiresRelic" };  CharacterData
                 System.Collections.Generic.List<string> ignoreFileds = new() { "ObjectClass", "Pointer", "WasCollected", "walkFrameRate", "startFrameCount", "zeroPad", "frameRate", "bodyOffset", "requiresRelic", "startingWeapon" };
 
                 Melon<BloodlinesMod>.Logger.Msg("\n==============================\n");
@@ -138,19 +122,9 @@ namespace Bloodlines
                     else
                         Melon<BloodlinesMod>.Logger.Msg($"{prop.Name} = <{prop.GetValue(stats)}>");
                 }
-
-                Melon<BloodlinesMod>.Logger.Msg("\n==============================\n");
-                Melon<BloodlinesMod>.Logger.Msg("\n==============================\n");
-
-                foreach (PropertyInfo prop in dataProps)
-                {
-                    if (prop.Name.Contains("BackingField") || ignoreFileds.Contains(prop.Name))
-                        continue;
-                    Melon<BloodlinesMod>.Logger.Msg($"{prop.Name} = <{prop.GetValue(characterData)}>");
-                }
             }
         }
-
+#endif
         [HarmonyPatch(typeof(Pickup))]
         class Pickup_Patch
         {
@@ -188,10 +162,12 @@ namespace Bloodlines
             static void InitializeGameSession_Postfix(GameManager __instance)
             {
                 Melon<BloodlinesMod>.Logger.Msg($"GameManager.{MethodBase.GetCurrentMethod()?.Name}");
-                if(isDebug()) BloodlinesMod._Timer = new Timer(TimerCallback, null, 0, 10000); // List stats every 10 seconds.
+#if DEBUG
+                BloodlinesMod._Timer = new Timer(TimerCallback, null, 0, 10000); // List stats every 10 seconds.
+#endif
             }
         }
-
+#if DEBUG
         [HarmonyPatch(typeof(RecapPage))]
         class RecapPage_Patch
         {
@@ -199,14 +175,14 @@ namespace Bloodlines
             [HarmonyPostfix]
             static void OnShowStart_Postfix(RecapPage __instance)
             {
-                if (isDebug() && BloodlinesMod._Timer != null)
+                if (BloodlinesMod._Timer != null)
                 {
                     BloodlinesMod._Timer.Dispose();
                     BloodlinesMod._Timer = null;
                 }
             }
         }
-
+#endif
         [HarmonyPatch(typeof(DataManager))]
         class DataManager_Patch
         {
@@ -258,56 +234,6 @@ namespace Bloodlines
                     sprite.name = spriteWrapper.SpriteNameWithoutExtension;
                     SpriteManager.RegisterSprite(sprite);
                 }
-                /*
-
-
-                StringBuilder everything = new StringBuilder();
-                StringBuilder passives = new StringBuilder();
-                StringBuilder baseWeaps = new StringBuilder();
-                StringBuilder weaps = new StringBuilder();
-                StringBuilder counters = new StringBuilder();
-                foreach (WeaponType weaponType in Enum.GetValues<WeaponType>())
-                {
-                    //JObject jObject = new JObject(__instance._allWeaponDataJson);
-                    //JToken jToken = jObject.GetValue(weaponType.ToString());
-                    //Melon<BloodlinesMod>.Logger.Msg(jToken);
-                    WeaponData weaponData = new WeaponData();
-                    if (!LocalizationManager.GetTranslation(weaponData.GetLocalizedNameTerm(weaponType), true, 0, true, false, null, null, true).Contains("weaponLang/"))
-                    {
-                        /*bool isPowerUp = false;
-                        string evoInto = "";
-                        bool isSpecialOnly = false;
-                        foreach (PropertyInfo prop in props)
-                        {
-                            if (prop.Name == "isPowerUp") isPowerUp = prop.GetValue(dict[weaponType], null);
-                        }
-                        everything.Append($"\"{weaponType}\", ");
-                        if () passives.Append($"\"{weaponType}\", ");
-                        if (!weap.isPowerUp && (weap.evoInto != null || weap.evoInto == "")) baseWeaps.Append($"\"{weaponType}\", ");
-                        if (weaponType.ToString().Contains("COUNTER")) counters.Append($"\"{weaponType}\", ");
-                        if (!weap.isSpecialOnly && !weap.isPowerUp) weaps.Append($"\"{weaponType}\", ");
-                    }
-                }
-                Melon<BloodlinesMod>.Logger.Msg(everything);
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg(passives);
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg(baseWeaps);
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg(weaps);
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg(counters);
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");
-                Melon<BloodlinesMod>.Logger.Msg("=================================");*/
             }
         }
 
