@@ -251,23 +251,27 @@ namespace Bloodlines
             {
                 if (isCustomCharacter(characterType))
                 {
-                    CharacterDataModel character = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType].Character;
-                    AnimDataModelWrapper animWrapper = Melon<BloodlinesMod>.Instance.manager.animDict[character.CharInternalName];
-
-                    PropertyInfo[] animProps = animWrapper.Anim.GetType().GetProperties();
-                    foreach (PropertyInfo prop in animProps)
+                    CharacterDataModelWrapper character = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
+                    SkinObjectModelv0_3 skin = character.Skin(__instance.CurrentSkinData.currentSkin);
+                    AnimDataModelWrapper animWrapper = new();
+                    if (Melon<BloodlinesMod>.Instance.manager.animDict.ContainsKey(skin.CharInternalName))
                     {
-                        var value = prop.GetValue(animWrapper.Anim, null);
-                        if (value != null)
+                        animWrapper = Melon<BloodlinesMod>.Instance.manager.animDict[skin.CharInternalName];
+                        PropertyInfo[] animProps = animWrapper.Anim.GetType().GetProperties();
+                        foreach (PropertyInfo prop in animProps)
                         {
-                            AnimObjectModel value2 = (AnimObjectModel)value;
-                            List<Sprite> sprites = new();
-                            foreach (string name in value2.Sprites)
+                            var value = prop.GetValue(animWrapper.Anim, null);
+                            if (value != null && !prop.Name.Equals("CharInternalName"))
                             {
-                                sprites.Add(SpriteManager.GetSprite(name));
-                            }
+                                AnimObjectModel value2 = (AnimObjectModel)value;
+                                List<Sprite> sprites = new();
+                                foreach (string name in value2.Sprites)
+                                {
+                                    sprites.Add(SpriteManager.GetSprite(name));
+                                }
 
-                            __instance.Anims.AddAnimation(prop.Name.ToString().ToLower(), sprites, value2.Fps, value2.Loops);
+                                __instance.Anims.AddAnimation(prop.Name.ToString().ToLower(), sprites, value2.Fps, value2.Loops);
+                            }
                         }
                     }
                 }

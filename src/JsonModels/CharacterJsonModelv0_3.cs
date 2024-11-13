@@ -18,10 +18,6 @@ namespace Bloodlines.src.JsonModels
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class CharacterJsonModelv0_3
     {
-        [JsonProperty("charInternalName")]
-        [DefaultValue("")]
-        public string CharInternalName { get; set; }
-
         [JsonProperty("isBought")]
         public bool IsBought { get; set; }
 
@@ -405,6 +401,10 @@ namespace Bloodlines.src.JsonModels
 
     public class SkinObjectModelv0_3
     {
+        [JsonProperty("charInternalName")]
+        [DefaultValue("")]
+        public string CharInternalName { get; set; }
+
         [DefaultValue(false)]
         [JsonProperty("alwaysAnimated")]
         public bool AlwaysAnimated { get; set; }

@@ -38,7 +38,7 @@ namespace Bloodlines.src.DataModels
             return 0;
         }
 
-        public SkinObjectModelv0_3 Skin(int skinId) => Character.Skins[skinId];
+        public SkinObjectModelv0_3 Skin(SkinType type) => Character.Skins[SkinTypeInt(type)];
 
         [JsonIgnore]
         public CharacterDataModel Character

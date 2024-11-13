@@ -343,7 +343,6 @@ namespace Bloodlines
                     }
                 case CharacterFileModelV0_3._version:
                     {
-                        Melon<BloodlinesMod>.Logger.Msg($"in CharacterModelV3");
                         type = typeof(CharacterFileModelV0_3);
                         CharacterFileModelV0_3? c = JsonConvert.DeserializeObject<CharacterFileModelV0_3>(json);
 
