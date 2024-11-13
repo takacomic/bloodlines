@@ -11,6 +11,10 @@ namespace Bloodlines.src.JsonModels
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class AnimJsonModelv0_3
     {
+        [JsonProperty("charInternalName")]
+        [DefaultValue("")]
+        public string CharInternalName { get; set; }
+
         [JsonProperty("walk")]
         [DefaultValue(null)]
         public AnimObjectModel Walk { get; set; }

@@ -18,6 +18,10 @@ namespace Bloodlines.src.JsonModels
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class CharacterJsonModelv0_3
     {
+        [JsonProperty("charInternalName")]
+        [DefaultValue("")]
+        public string CharInternalName { get; set; }
+
         [JsonProperty("isBought")]
         public bool IsBought { get; set; }
 

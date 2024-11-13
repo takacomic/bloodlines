@@ -32,7 +32,7 @@ namespace Bloodlines
         public const string Description = "Easily add custom characters!";
         public const string Author = "Nick, Takacomic";
         public const string Company = "CorruptedInfluences";
-        public const string Version = "0.3.0";
+        public const string Version = "0.3.1";
         public const string Download = "https://github.com/takacomic/bloodlines";
     }
 
@@ -234,6 +234,11 @@ namespace Bloodlines
                     sprite.name = spriteWrapper.SpriteNameWithoutExtension;
                     SpriteManager.RegisterSprite(sprite);
                 }
+
+                foreach(AnimDataModelWrapper anim in Melon<BloodlinesMod>.Instance.manager.anims)
+                {
+                    Melon<BloodlinesMod>.Instance.manager.animDict.Add(anim.Anim.CharInternalName, anim);
+                }
             }
         }
 
@@ -244,9 +249,11 @@ namespace Bloodlines
             [HarmonyPostfix]
             static void InitCharacter(CharacterController __instance, CharacterType characterType)
             {
-                foreach (AnimDataModelWrapper animWrapper in Melon<BloodlinesMod>.Instance.manager.anims)
+                if (isCustomCharacter(characterType))
                 {
-                    if (!isCustomCharacter(characterType)) break;
+                    CharacterDataModel character = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType].Character;
+                    AnimDataModelWrapper animWrapper = Melon<BloodlinesMod>.Instance.manager.animDict[character.CharInternalName];
+
                     PropertyInfo[] animProps = animWrapper.Anim.GetType().GetProperties();
                     foreach (PropertyInfo prop in animProps)
                     {

@@ -18,6 +18,7 @@ namespace Bloodlines
         public Dictionary<CharacterType, CharacterDataModelWrapper> characterDict { get; set; } = new();
         public List<SpriteDataModelWrapper> sprites { get; protected set; } = new();
         public List<AnimDataModelWrapper> anims { get; protected set; } = new();
+        public Dictionary<string, AnimDataModelWrapper> animDict { get; set; } = new();
 
         readonly string ZipPath;
         readonly string ExtractPath;

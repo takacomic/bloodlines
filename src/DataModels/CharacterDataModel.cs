@@ -59,6 +59,10 @@ namespace Bloodlines.src.DataModels
 
     public class CharacterDataModel
     {
+        [JsonProperty("charInternalName")]
+        [DefaultValue("")]
+        public string CharInternalName { get; set; }
+
         [JsonIgnore]
         public CharacterType CharacterType { get; set; }
 

@@ -1,15 +1,8 @@
 ﻿using Bloodlines.src.JsonModels;
-using Il2CppVampireSurvivors.Data;
-using Il2CppVampireSurvivors.Data.Characters;
-using Il2CppVampireSurvivors.Objects;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace Bloodlines.src.DataModels
 {
@@ -43,6 +36,10 @@ namespace Bloodlines.src.DataModels
 
     public class AnimDataModel
     {
+        [JsonProperty("charInternalName")]
+        [DefaultValue("")]
+        public string CharInternalName { get; set; }
+
         [JsonProperty("walk")]
         [DefaultValue(null)]
         public AnimObjectModel Walk { get; set; }
