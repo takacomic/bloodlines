@@ -1,20 +1,9 @@
-# No longer actively developing.
-I will no longer be actively developing this mod. Feel free to fork this repo and continue development as long as you follow the [LICENSE](./LICENSE).
-  
-<br />
-<br /><br />
-<br /><br />
-<br />
-
-
 # <img src="./docs/images/00051-1768801398.ico" alt="Bloodlines Icon" width="30"/> Bloodlines - A custom character importer for Vampire Survivors
 A mod for Vampire Survivors to help facilitate creating custom characters.
 
-## Join the official bloodlines discord [Here!](https://discord.gg/ScfxCepsRb)
-
 ## Installing for the first time
 1. Install MelonLoader - [Installation Instructions](https://melonwiki.xyz/#/?id=requirements) **IMPORTANT:** Start the game at least once prior to going to the next step.
-3. Download bloodlines.dll from newest release - [Latest Release](https://github.com/nwfistere/bloodlines/releases/latest)
+3. Download bloodlines.dll from newest release - [Latest Release](https://github.com/takacomic/bloodlines/releases/latest)
 4. Add bloodlines.dll the mods folder in Vampire Survivors
    - Question: Where's my game installed?
 	 - Answer: Go to your steam library, in the list of your games: right-click on Vampire Survivors, go to properties -> Installed Files -> Browse. That is the base folder of Vampire Survivors. If you installed Melonloader correctly you should see a mods folder.
@@ -56,10 +45,10 @@ See [examples](./examples)
 
 
 ## Known bugs/limitations
-See: https://github.com/nwfistere/bloodlines/labels/bug Feel free to open any bugs.
+See: https://github.com/takacomic/bloodlines/labels/bug Feel free to open any bugs.
 
 ## Future plans
-See: https://github.com/nwfistere/bloodlines/labels/enhancement
+See: https://github.com/takacomic/bloodlines/labels/enhancement
 
 ## License
 [See LICENSE](./LICENSE)
