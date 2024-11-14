@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Xml.Linq;
 using UnityEngine;
 using Il2Generic = Il2CppSystem.Collections.Generic;
 
@@ -261,7 +262,8 @@ namespace Bloodlines
                         foreach (PropertyInfo prop in animProps)
                         {
                             var value = prop.GetValue(animWrapper.Anim, null);
-                            if (value != null && !prop.Name.Equals("CharInternalName"))
+                            if (prop.Name.Equals("CharInternalName")) break;
+                            if (value != null)
                             {
                                 AnimObjectModel value2 = (AnimObjectModel)value;
                                 List<Sprite> sprites = new();

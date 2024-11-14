@@ -60,8 +60,7 @@ namespace Bloodlines.src.DataModels
     public class CharacterDataModel
     {
         [JsonProperty("charInternalName")]
-        [DefaultValue("")]
-        public string CharInternalName { get; set; }
+        public string? CharInternalName { get; set; }
 
         [JsonIgnore]
         public CharacterType CharacterType { get; set; }
@@ -84,26 +83,26 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("banish")]
         public float Banish { get; set; }
 
-        [JsonProperty("bgm")]
-        public BgmType BGM { get; set; }
+        /*[JsonProperty("bgm")]
+        public BgmType BGM { get; set; }*/
 
         [JsonProperty("bodyOffset")]
         public Vector2 BodyOffset { get; set; }
 
         [JsonProperty("characterLangSheet")]
-        public string CharacterLangSheet { get; set; }
+        public string? CharacterLangSheet { get; set; }
 
         [JsonProperty("charm")]
         public int Charm { get; set; }
 
         [JsonProperty("charName")]
-        public string CharName { get; set; }
+        public string? CharName { get; set; }
 
         [JsonProperty("charSelFrame")]
-        public string CharSelFrame { get; set; }
+        public string? CharSelFrame { get; set; }
 
         [JsonProperty("charSelTexture")]
-        public string CharSelTexture { get; set; }
+        public string? CharSelTexture { get; set; }
 
         [JsonProperty("cooldown")]
         public float Cooldown { get; set; }
@@ -128,7 +127,7 @@ namespace Bloodlines.src.DataModels
         public float Defang { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("duration")]
         public float Duration { get; set; }
@@ -137,14 +136,13 @@ namespace Bloodlines.src.DataModels
         public int ExLevels { get; set; }
 
         [JsonProperty("exWeapons")]
-        [DefaultValue(null)]
-        public List<string> ExWeapons { get; set; }
+        public List<string>? ExWeapons { get; set; }
 
         [JsonProperty("fever")]
         public float Fever { get; set; }
 
         [JsonProperty("frameRate")]
-        public int FrameRate { get; set; }
+        public int? FrameRate { get; set; }
 
         [JsonProperty("greed")]
         public float Greed { get; set; }
@@ -153,15 +151,13 @@ namespace Bloodlines.src.DataModels
         public float Growth { get; set; }
 
         [JsonProperty("headOffsets")]
-        [DefaultValue(null)]
-        public List<Vector2> HeadOffsets { get; set; }
+        public List<Vector2>? HeadOffsets { get; set; }
 
         [JsonProperty("hidden")]
         public bool Hidden { get; set; }
 
         [JsonProperty("hiddenWeapons")]
-        [DefaultValue(null)]
-        public List<string> HiddenWeapons { get; set; }
+        public List<string>? HiddenWeapons { get; set; }
 
         [JsonProperty("hideWeaponIcon")]
         [DefaultValue(false)]
@@ -171,11 +167,11 @@ namespace Bloodlines.src.DataModels
         public int InvulTimeBonus { get; set; }
 
         [JsonProperty("level")]
+        [DefaultValue(1)]
         public int Level { get; set; }
 
         [JsonProperty("levelUpPresets")]
-        [DefaultValue(null)]
-        public List<Loadout> LevelUpPresets { get; set; }
+        public List<Loadout>? LevelUpPresets { get; set; }
 
         [JsonProperty("luck")]
         public float Luck { get; set; }
@@ -190,29 +186,29 @@ namespace Bloodlines.src.DataModels
         public float MoveSpeed { get; set; }
 
         [JsonProperty("nameIndex")]
-        public int NameIndex { get; set; }
+        public List<string>? NameIndex { get; set; }
 
         [JsonProperty("noHurt")]
+        [DefaultValue(false)]
         public bool NoHurt { get; set; }
 
         [JsonProperty("onEveryLevelUp")]
-        public ModifierStats OnEveryLevelUp { get; set; }
+        public ModifierStats? OnEveryLevelUp { get; set; }
 
         [JsonProperty("portraitName")]
-        public string PortraitName { get; set; }
+        public string? PortraitName { get; set; }
 
         [JsonProperty("power")]
         public double Power { get; set; }
 
         [JsonProperty("prefix")]
-        public string Prefix { get; set; }
+        public string? Prefix { get; set; }
 
         [JsonProperty("price")]
         public float Price { get; set; }
 
         [JsonProperty("racingOffsets")]
-        [DefaultValue(null)]
-        public List<RacingOffsetData> RacingOffsets { get; set; }
+        public List<RacingOffsetData>? RacingOffsets { get; set; }
 
         [JsonProperty("regen")]
         public float Regen { get; set; }
@@ -235,35 +231,35 @@ namespace Bloodlines.src.DataModels
 
         [JsonProperty("sineArea")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineArea { get; set; }
+        public SineBonusData? SineArea { get; set; }
 
         [JsonProperty("sineCooldown")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineCooldown { get; set; }
+        public SineBonusData? SineCooldown { get; set; }
 
         [JsonProperty("sineDuration")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineDuration { get; set; }
+        public SineBonusData? SineDuration { get; set; }
 
         [JsonProperty("sineMight")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineMight { get; set; }
+        public SineBonusData? SineMight { get; set; }
 
         [JsonProperty("sineSpeed")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineSpeed { get; set; }
+        public SineBonusData? SineSpeed { get; set; }
 
         [JsonProperty("showcase")]
-        public List<WeaponType> Showcase { get; set; }
+        public List<WeaponType>? Showcase { get; set; }
 
         [JsonProperty("shroud")]
         public float Shroud { get; set; }
 
         [JsonProperty("skinLangSheet")]
-        public string SkinLangSheet { get; set; }
+        public string? SkinLangSheet { get; set; }
 
         [JsonProperty("skins")]
-        public List<SkinObjectModelv0_3> Skins { get; set; }
+        public List<SkinObjectModelv0_3>? Skins { get; set; }
 
         [JsonProperty("skips")]
         public float Skips { get; set; }
@@ -272,7 +268,7 @@ namespace Bloodlines.src.DataModels
         public float Speed { get; set; }
 
         [JsonProperty("spriteAnims")]
-        public SpriteAnims SpriteAnims { get; set; }
+        public SpriteAnims? SpriteAnims { get; set; }
 
         [JsonProperty("spriteName")]
         public string SpriteName { get; set; }
@@ -285,13 +281,13 @@ namespace Bloodlines.src.DataModels
         public WeaponType StartingWeapon { get; set; }
 
         [JsonProperty("suffix")]
-        public string Suffix { get; set; }
+        public string? Suffix { get; set; }
 
         [JsonProperty("surname")]
-        public string Surname { get; set; }
+        public string? Surname { get; set; }
 
         [JsonProperty("textureName")]
-        public string TextureName { get; set; }
+        public string? TextureName { get; set; }
 
         [JsonProperty("walkFrameRate")]
         public int WalkFrameRate { get; set; }
@@ -300,6 +296,6 @@ namespace Bloodlines.src.DataModels
         public int WalkingFrames { get; set; }
 
         [JsonProperty("zeroPad")]
-        public int ZeroPad { get; set; }
+        public int? ZeroPad { get; set; }
     }
 }
