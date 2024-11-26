@@ -17,8 +17,6 @@ namespace Bloodlines
         public List<CharacterDataModelWrapper> characters { get; protected set; } = new();
         public Dictionary<CharacterType, CharacterDataModelWrapper> characterDict { get; set; } = new();
         public List<SpriteDataModelWrapper> sprites { get; protected set; } = new();
-        public List<AnimDataModelWrapper> anims { get; protected set; } = new();
-        public Dictionary<string, AnimDataModelWrapper> animDict { get; set; } = new();
 
         readonly string ZipPath;
         readonly string ExtractPath;
@@ -286,12 +284,6 @@ namespace Bloodlines
             {
                 data.BaseDirectory = Path.GetDirectoryName(filePath);
                 sprites.Add(data);
-            });
-
-            characterDto.GetAnimList().ForEach((data) =>
-            {
-                data.BaseDirectory = Path.GetDirectoryName(filePath);
-                anims.Add(data);
             });
         }
 

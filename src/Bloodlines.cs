@@ -1,11 +1,13 @@
 ﻿using Bloodlines.src.DataModels;
 using Bloodlines.src.JsonModels;
 using HarmonyLib;
+using Il2CppI2.Loc;
 using Il2CppNewtonsoft.Json;
 using Il2CppNewtonsoft.Json.Linq;
 using Il2CppSystem.Collections.Generic;
 using Il2CppVampireSurvivors.Data;
 using Il2CppVampireSurvivors.Data.Characters;
+using Il2CppVampireSurvivors.Data.Weapons;
 using Il2CppVampireSurvivors.Framework;
 using Il2CppVampireSurvivors.Framework.NumberTypes;
 using Il2CppVampireSurvivors.Graphics;
@@ -20,6 +22,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using UnityEngine;
@@ -33,7 +36,7 @@ namespace Bloodlines
         public const string Description = "Easily add custom characters!";
         public const string Author = "Nick, Takacomic";
         public const string Company = "CorruptedInfluences";
-        public const string Version = "0.3.2";
+        public const string Version = "0.3.3";
         public const string Download = "https://github.com/takacomic/bloodlines";
     }
 
@@ -234,48 +237,6 @@ namespace Bloodlines
                     Sprite sprite = SpriteImporter.LoadSprite(texture, spriteWrapper.Sprite.Rect, spriteWrapper.Sprite.Pivot);
                     sprite.name = spriteWrapper.SpriteNameWithoutExtension;
                     SpriteManager.RegisterSprite(sprite);
-                }
-
-                foreach(AnimDataModelWrapper anim in Melon<BloodlinesMod>.Instance.manager.anims)
-                {
-                    Melon<BloodlinesMod>.Instance.manager.animDict.Add(anim.Anim.CharInternalName, anim);
-                }
-            }
-        }
-
-        [HarmonyPatch(typeof(CharacterController))]
-        class CharacterController_Patch
-        {
-            [HarmonyPatch(nameof(CharacterController.InitCharacter))]
-            [HarmonyPostfix]
-            static void InitCharacter(CharacterController __instance, CharacterType characterType)
-            {
-                if (isCustomCharacter(characterType))
-                {
-                    CharacterDataModelWrapper character = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
-                    SkinObjectModelv0_3 skin = character.Skin(__instance.CurrentSkinData.currentSkin);
-                    AnimDataModelWrapper animWrapper = new();
-                    if (Melon<BloodlinesMod>.Instance.manager.animDict.ContainsKey(skin.CharInternalName))
-                    {
-                        animWrapper = Melon<BloodlinesMod>.Instance.manager.animDict[skin.CharInternalName];
-                        PropertyInfo[] animProps = animWrapper.Anim.GetType().GetProperties();
-                        foreach (PropertyInfo prop in animProps)
-                        {
-                            var value = prop.GetValue(animWrapper.Anim, null);
-                            if (prop.Name.Equals("CharInternalName")) break;
-                            if (value != null)
-                            {
-                                AnimObjectModel value2 = (AnimObjectModel)value;
-                                List<Sprite> sprites = new();
-                                foreach (string name in value2.Sprites)
-                                {
-                                    sprites.Add(SpriteManager.GetSprite(name));
-                                }
-
-                                __instance.Anims.AddAnimation(prop.Name.ToString().ToLower(), sprites, value2.Fps, value2.Loops);
-                            }
-                        }
-                    }
                 }
             }
         }

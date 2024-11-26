@@ -22,8 +22,6 @@ namespace Bloodlines
         public abstract List<CharacterDataModelWrapper> GetCharacterList();
 
         public abstract List<SpriteDataModelWrapper> GetSpriteList();
-
-        public abstract List<AnimDataModelWrapper> GetAnimList();
     }
 
     [Obsolete("CharacterFileModelV0_1 is deprecated, useCharacterFileModelV0_2 instead.")]
@@ -39,9 +37,6 @@ namespace Bloodlines
 
         [JsonProperty("spriteData")]
         public List<SpriteJsonModelv0_3> SpriteData { get; set; }
-
-        [JsonProperty("animData")]
-        public List<AnimJsonModelv0_3> AnimData { get; set; }
 
         public CharacterFileModelV0_1() : base() { }
 
@@ -142,15 +137,6 @@ namespace Bloodlines
 
             return spriteDatas;
         }
-
-        public override List<AnimDataModelWrapper> GetAnimList()
-        {
-            List<AnimDataModelWrapper> animDatas = new();
-
-            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
-
-            return animDatas;
-        }
     }
 
     [Obsolete("CharacterFileModelV0_2 is deprecated, use CharacterFileV0_3 instead.")]
@@ -166,9 +152,6 @@ namespace Bloodlines
 
         [JsonProperty("spriteData")]
         public List<SpriteJsonModelv0_3> SpriteData { get; set; }
-
-        [JsonProperty("animData")]
-        public List<AnimJsonModelv0_3> AnimData { get; set; }
 
         [JsonIgnore]
         public string CharacterBaseDir { get; set; }
@@ -194,15 +177,6 @@ namespace Bloodlines
 
             return spriteDatas;
         }
-
-        public override List<AnimDataModelWrapper> GetAnimList()
-        {
-            List<AnimDataModelWrapper> animDatas = new();
-
-            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
-
-            return animDatas;
-        }
     }
 
     // Mark with [Obsolete("CharacterFileModelV0_3 is deprecated, use CharacterFileV* instead.")] when I add a new version.
@@ -218,9 +192,6 @@ namespace Bloodlines
 
         [JsonProperty("spriteData")]
         public List<SpriteJsonModelv0_3> SpriteData { get; set; }
-
-        [JsonProperty("animData")]
-        public List<AnimJsonModelv0_3> AnimData { get; set; }
 
         [JsonIgnore]
         public string CharacterBaseDir { get; set; }
@@ -245,15 +216,6 @@ namespace Bloodlines
             SpriteData.ForEach((c) => spriteDatas.Add(c.toSpriteDataModel()));
 
             return spriteDatas;
-        }
-
-        public override List<AnimDataModelWrapper> GetAnimList()
-        {
-            List<AnimDataModelWrapper> animDatas = new();
-
-            AnimData.ForEach((c) => animDatas.Add(c.toAnimDataModel()));
-
-            return animDatas;
         }
     }
 }
