@@ -18,7 +18,7 @@ Did your friend make a super cool custom character and they want to share it wit
 4. start the game.
 
 ## Creating your own character packs!
-### **New!** - Easily create a custom character using the new tool - [HERE](https://nwfistere.github.io/bloodlines/)
+### **New!** - Easily create a custom character using the new tool - [HERE](https://github.com/takacomic/BloodlinesJsonEditor/releases)
 ### Character packs contain two types of items:
 1. A json file - This contains the character data: Starting weapon, which sprites to use, power level, etc.
 2. png files - The character sprites. (These must be referenced by filename in the json file)
