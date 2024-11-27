@@ -36,7 +36,7 @@ namespace Bloodlines
         public const string Description = "Easily add custom characters!";
         public const string Author = "Nick, Takacomic";
         public const string Company = "CorruptedInfluences";
-        public const string Version = "0.3.3";
+        public const string Version = "0.3.4";
         public const string Download = "https://github.com/takacomic/bloodlines";
     }
 
