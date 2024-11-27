@@ -258,7 +258,7 @@ namespace Bloodlines.src.JsonModels
         public float Growth { get; set; }
 
         [JsonProperty("invulTimeBonus")]
-        public int InvulTimeBonus { get; set; }
+        public float InvulTimeBonus { get; set; }
 
         [JsonProperty("level")]
         public int Level { get; set; }
@@ -290,7 +290,7 @@ namespace Bloodlines.src.JsonModels
         [JsonProperty("shields")]
         public float Shields { get; set; }
 
-        [JsonProperty("sineArea")]
+        /*[JsonProperty("sineArea")]
         [JsonConverter(typeof(StringEnumConverter))]
         public SineBonusData SineArea { get; set; }
 
@@ -308,7 +308,7 @@ namespace Bloodlines.src.JsonModels
 
         [JsonProperty("sineSpeed")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SineBonusData SineSpeed { get; set; }
+        public SineBonusData SineSpeed { get; set; }*/
 
         [JsonProperty("shroud")]
         public float Shroud { get; set; }
