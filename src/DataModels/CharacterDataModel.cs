@@ -164,7 +164,7 @@ namespace Bloodlines.src.DataModels
         public bool HidenWeaponIcon { get; set; }
 
         [JsonProperty("invulTimeBonus")]
-        public int InvulTimeBonus { get; set; }
+        public float InvulTimeBonus { get; set; }
 
         [JsonProperty("level")]
         [DefaultValue(1)]
