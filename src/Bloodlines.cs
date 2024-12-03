@@ -152,5 +152,23 @@ namespace Bloodlines
                 }
             }
         }
+
+        [HarmonyPatch(typeof(CharacterController))]
+        class CharacterController_Patch
+        {
+            [HarmonyPatch(nameof(CharacterController.InitCharacter))]
+            [HarmonyPostfix]
+            static void InitCharacter_Patch(CharacterController __instance, CharacterType characterType)
+            {
+                if(isCustomCharacter(characterType))
+                {
+                    CharacterDataModelWrapper cWrapper = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
+                    if(cWrapper.Skin(__instance.CurrentCharacterData.currentSkin).AlwaysAnimated)
+                    {
+                        __instance.IsAnimForced = true;
+                    }
+                }
+            }
+        }
     }
 }

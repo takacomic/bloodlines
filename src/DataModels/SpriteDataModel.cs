@@ -42,9 +42,6 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("rect")]
         public Rect Rect { get; set; }
 
-        /*[JsonProperty("pivot")]
-        public Vector2 Pivot { get; set; }*/
-
         [JsonProperty("spriteName")]
         public string SpriteName { get; set; }
 
