@@ -464,7 +464,7 @@ namespace Bloodlines.src.JsonModels
 
         [JsonProperty("hiddenWeapons")]
         [DefaultValue(null)]
-        public Il2CppSystem.Collections.Generic.List<string> HiddenWeapons { get; set; }
+        public List<string> HiddenWeapons { get; set; } = new List<string>();
 
         [JsonProperty("luck")]
         public float Luck { get; set; }
@@ -546,8 +546,10 @@ namespace Bloodlines.src.JsonModels
             Skin skin = new();
             Il2CppSystem.Collections.Generic.List<string> exAccessories = new Il2CppSystem.Collections.Generic.List<string>();
             Il2CppSystem.Collections.Generic.List<string> exWeapons = new Il2CppSystem.Collections.Generic.List<string>();
+            Il2CppSystem.Collections.Generic.List<string> hiddenWeapons = new Il2CppSystem.Collections.Generic.List<string>();
             foreach (var a in model.ExAccessories) { exAccessories.Add(a); }
             foreach (var a in model.ExWeapons) { exWeapons.Add(a); }
+            foreach (var a in model.HiddenWeapons) { hiddenWeapons.Add(a); }
 
             skin.alwaysHidden = model.AlwaysHidden;
             skin.amount = model.Amount;
@@ -566,7 +568,7 @@ namespace Bloodlines.src.JsonModels
             skin.growth = model.Growth;
             skin.headOffsets = model.HeadOffsets;
             skin.hidden = model.Hidden;
-            skin.hiddenWeapons = model.HiddenWeapons;
+            skin.hiddenWeapons = hiddenWeapons;
             skin.luck = model.Luck;
             skin.magnet = model.Magnet;
             skin.maxHp = model.MaxHp;
@@ -600,8 +602,10 @@ namespace Bloodlines.src.JsonModels
             SkinObjectModelv0_3 model = new();
             List<string> exAccessories = new List<string>();
             List<string> exWeapons = new List<string>();
+           List<string> hiddenWeapons = new List<string>();
             foreach (var a in skin.exAccessories) { exAccessories.Add(a); }
             foreach (var a in skin.exWeapons) { exWeapons.Add(a); }
+            foreach (var a in skin.hiddenWeapons) { hiddenWeapons.Add(a); }
 
             model.AlwaysHidden = skin.alwaysHidden;
             model.Amount = skin.amount;
@@ -620,7 +624,7 @@ namespace Bloodlines.src.JsonModels
             model.Growth = skin.growth;
             model.HeadOffsets = skin.headOffsets;
             model.Hidden = skin.hidden;
-            model.HiddenWeapons = skin.hiddenWeapons;
+            model.HiddenWeapons = hiddenWeapons;
             model.Luck = skin.luck;
             model.Magnet = skin.magnet;
             model.MaxHp = skin.maxHp;

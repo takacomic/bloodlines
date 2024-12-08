@@ -136,7 +136,7 @@ namespace Bloodlines.src.DataModels
         public int ExLevels { get; set; }
 
         [JsonProperty("exWeapons")]
-        public List<string>? ExWeapons { get; set; }
+        public List<string> ExWeapons { get; set; }
 
         [JsonProperty("fever")]
         public float Fever { get; set; }
@@ -157,7 +157,7 @@ namespace Bloodlines.src.DataModels
         public bool Hidden { get; set; }
 
         [JsonProperty("hiddenWeapons")]
-        public List<string>? HiddenWeapons { get; set; }
+        public List<string> HiddenWeapons { get; set; }
 
         [JsonProperty("hideWeaponIcon")]
         [DefaultValue(false)]
