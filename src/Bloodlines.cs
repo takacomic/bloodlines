@@ -232,9 +232,12 @@ namespace Bloodlines
 
                 if (isCustomCharacter(characterType))
                 {
+                    float x = __instance._spriteRenderer.sprite.rect.width / 95;
+                    if (x > 0.80f) x = 0.15f;
+                    else if (x > 0.35f) x = 0.35f;
                     Il2CppSystem.Nullable<float> a = new Il2CppSystem.Nullable<float>();
                     a.value = __instance._spriteRenderer.sprite.rect.height / 100 + 0.03f;
-                    __instance.setOrigin(__instance._spriteRenderer.sprite.rect.width / 95, a);
+                    __instance.setOrigin(x, a);
 
                     // Can remove due to idle anims
                     CharacterDataModelWrapper cWrapper = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
@@ -290,30 +293,6 @@ namespace Bloodlines
             [HarmonyPatch(nameof(GameManager.InitializeGameSessionPostLoad))]
             [HarmonyPostfix]
             static void InitializeGameSessionPostLoad_Patch(GameManager __instance)
-            {
-                Melon<BloodlinesMod>.Instance.gameManager = __instance;
-                CharacterController cControl = __instance.PlayerOne;
-                CharacterType characterType = cControl.CharacterType;
-
-                if (isCustomCharacter(characterType))
-                {
-                    CharacterDataModelWrapper cWrapper = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
-                    SkinObjectModelv0_3 skin = cWrapper.Skin(cControl._currentSkinData.currentSkin);
-                    foreach (ArcanaType a in skin.StartingArcana)
-                    {
-                        ArcanaAdder(a);
-                    }
-
-                    foreach (WeaponType w in skin.HiddenWeapons)
-                    {
-                        HiddenWeaponLeveler(w, cControl);
-                    }
-                }
-            }
-
-            [HarmonyPatch(nameof(GameManager.OnUpdate))]
-            [HarmonyPostfix]
-            static void OnUpdate_Patch(GameManager __instance)
             {
                 Melon<BloodlinesMod>.Instance.gameManager = __instance;
                 CharacterController cControl = __instance.PlayerOne;
