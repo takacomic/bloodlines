@@ -62,7 +62,8 @@ namespace Bloodlines
 
             foreach (string dir in Directory.GetDirectories(ExtractPath))
             {
-                string jsonFile = Path.Combine(dir, "character.json");
+                var files = Directory.GetFiles(dir, "*.json");
+                string jsonFile = Path.Combine(dir, $"{files[0]}");
 
                 if (File.Exists(jsonFile))
                 {

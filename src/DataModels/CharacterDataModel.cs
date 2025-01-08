@@ -62,6 +62,16 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("charInternalName")]
         public string? CharInternalName { get; set; }
 
+        [JsonProperty("customPortrait")]
+        public string? CustomPortrait { get; set; }
+
+        [JsonProperty("smallPortrait")]
+        [DefaultValue(false)]
+        public bool SmallPortrait { get; set; }
+
+        [JsonProperty("dlcSort")]
+        public DlcType? DlcSort { get; set; }
+
         [JsonIgnore]
         public CharacterType CharacterType { get; set; }
 
@@ -83,8 +93,8 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("banish")]
         public float Banish { get; set; }
 
-        /*[JsonProperty("bgm")]
-        public BgmType BGM { get; set; }*/
+        [JsonProperty("bgm")]
+        public BgmType? BGM { get; set; }
 
         [JsonProperty("bodyOffset")]
         public Vector2 BodyOffset { get; set; }
@@ -248,6 +258,9 @@ namespace Bloodlines.src.DataModels
         [JsonProperty("sineSpeed")]
         [JsonConverter(typeof(StringEnumConverter))]
         public SineBonusData? SineSpeed { get; set; }
+
+        [JsonProperty("sizeScale")]
+        public Vector2? SizeScale { get; set; }
 
         [JsonProperty("showcase")]
         public List<WeaponType>? Showcase { get; set; }

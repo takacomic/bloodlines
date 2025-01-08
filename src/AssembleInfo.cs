@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription(ModInfo.Description)]
 [assembly: AssemblyCompany(ModInfo.Company)]
 [assembly: AssemblyProduct(ModInfo.Name)]
-[assembly: AssemblyCopyright("Copyright " + ModInfo.Author + " 2023")]
+[assembly: AssemblyCopyright("Copyright " + ModInfo.Author + " 2025")]
 [assembly: AssemblyTrademark(ModInfo.Company)]
 [assembly: AssemblyVersion(ModInfo.Version)]
 [assembly: AssemblyFileVersion(ModInfo.Version)]
