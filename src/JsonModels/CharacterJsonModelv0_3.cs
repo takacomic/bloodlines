@@ -224,6 +224,11 @@ namespace Bloodlines.src.JsonModels
                 }
             }
 
+            foreach (SkinObjectModelv0_3 skin in Skins)
+            {
+                modelWrapper.CharacterSkinIndices.Add(skin.SkinType, modelWrapper.CharacterSkinIndices.Count);
+            }
+
             // Note: Looks like we cannot serialize Skin because of Il2Cpp.
             // Could probably use a custom parser to call the Il2Cpp version of newtonsoft to handle the Skin object, but too lazy right now.
             // Use SkinObjectModelv0_2 instead.
@@ -415,6 +420,9 @@ namespace Bloodlines.src.JsonModels
         [JsonProperty("accessories")]
         public List<WeaponType> Accessories { get; set; } = new List<WeaponType>();
 
+        [JsonProperty("allowMultiHidden")]
+        public bool AllowMulti { get; set; }
+
         [JsonProperty("weapons")]
         public List<WeaponType> Weapons { get; set; } = new List<WeaponType>();
 
@@ -422,8 +430,14 @@ namespace Bloodlines.src.JsonModels
         [DefaultValue(null)]
         public List<WeaponType> HiddenWeapons { get; set; } = new List<WeaponType>();
 
+        [JsonProperty("killCount")]
+        public int KillCount { get; set; }
+
         [JsonProperty("level")]
         public int Level { get; set; }
+
+        [JsonProperty("timer")]
+        public int Timer { get; set; }
 
         [JsonProperty("arcana")]
         public List<ArcanaType> Arcana { get; set; } = new List<ArcanaType>();

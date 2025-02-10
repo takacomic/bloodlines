@@ -32,7 +32,7 @@ namespace Bloodlines
         public const string Description = "Easily add custom characters!";
         public const string Author = "Nick, Takacomic";
         public const string Company = "CorruptedInfluences";
-        public const string Version = "0.3.8";
+        public const string Version = "0.3.9";
         public const string Download = "https://github.com/takacomic/bloodlines";
     }
 
@@ -43,6 +43,7 @@ namespace Bloodlines
         public Config Config { get; private set; }
         public CharacterManager manager { get; private set; }
         internal GameManager gameManager;
+        internal SkinType _skinType;
         internal int characterIDs = 10000;
 
         public override void OnInitializeMelon()
@@ -64,12 +65,13 @@ namespace Bloodlines
             return getCharacterManager().characterDict.ContainsKey(characterType);
         }
 
-        public static void HiddenWeaponLeveler(WeaponType w, CharacterController cControl)
+        public static void HiddenWeaponLeveler(WeaponType w, CharacterController cControl, bool allowMulti = false)
         {
             if (AlreadyHiddenWeapon(w, cControl))
                 foreach (Equipment e in cControl.WeaponsManager.HiddenEquipment)
                 {
-                    if (e.Type == w) e.LevelUp(true);
+                    if (e.Type != w) continue;
+                    e.LevelUp(true);
                     break;
                 }
             else
@@ -199,7 +201,7 @@ namespace Bloodlines
                 {
                     CharacterDataModel character = characterWrapper.Character;
                     if (dlcType == character.DlcSort)
-                    {   
+                    {
                         CharacterType characterType = (CharacterType)Melon<BloodlinesMod>.Instance.characterIDs++;
                         characterWrapper.characterType = characterType;
                         character.CharacterType = characterType;
@@ -225,6 +227,8 @@ namespace Bloodlines
         [HarmonyPatch(typeof(CharacterController))]
         class CharacterController_Patch
         {
+            static List<EquipmentModifierJsonModelv0_3> equipmentUsed = new();
+
             [HarmonyPatch(nameof(CharacterController.InitCharacter))]
             [HarmonyPostfix]
             static void InitCharacter_Patch(CharacterController __instance, CharacterType characterType)
@@ -232,6 +236,7 @@ namespace Bloodlines
 
                 if (isCustomCharacter(characterType))
                 {
+                    equipmentUsed.Clear();
                     float x = __instance._spriteRenderer.sprite.rect.width / 95;
                     if (x > 0.80f) x = 0.15f;
                     else if (x > 0.35f) x = 0.35f;
@@ -241,7 +246,7 @@ namespace Bloodlines
 
                     // Can remove due to idle anims
                     CharacterDataModelWrapper cWrapper = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
-                    if (cWrapper.Skin(__instance.CurrentCharacterData.currentSkin).AlwaysAnimated)
+                    if (cWrapper.Skin(Melon<BloodlinesMod>.Instance._skinType).AlwaysAnimated)
                     {
                         __instance.IsAnimForced = true;
                     }
@@ -252,6 +257,14 @@ namespace Bloodlines
                         Vector3 newScale = new Vector3(localScale.x * sizeScale.x, localScale.y * sizeScale.y, localScale.z);
                         __instance.gameObject.transform.localScale = newScale;
                     }
+
+                    if (cWrapper.Character.FrameRate == null && cWrapper.Character.FrameRate == 0) return;
+
+                    Il2CppSystem.Nullable<int> nullInt = new Il2CppSystem.Nullable<int>
+                    {
+                        value = (int)cWrapper.Character.FrameRate!
+                    };
+                    __instance.CurrentCharacterData.frameRate = nullInt;
                 }
             }
 
@@ -261,7 +274,7 @@ namespace Bloodlines
             {
                 if (isCustomCharacter(__instance.CharacterType))
                 {
-                    SkinObjectModelv0_3 skin = Melon<BloodlinesMod>.Instance.manager.characterDict[__instance.CharacterType].Skin(__instance.CurrentSkinData.currentSkin);
+                    SkinObjectModelv0_3 skin = Melon<BloodlinesMod>.Instance.manager.characterDict[__instance.CharacterType].Skin(Melon<BloodlinesMod>.Instance._skinType);
                     foreach (EquipmentModifierJsonModelv0_3 modifier in skin.EquipmentModifiers)
                     {
                         if (modifier.Level != __instance.Level)
@@ -285,6 +298,101 @@ namespace Bloodlines
                     }
                 }
             }
+
+            [HarmonyPatch(nameof(CharacterController.OnUpdate))]
+            [HarmonyPostfix]
+            static void OnUpdate_Patch(CharacterController __instance)
+            {
+                //Wanted a nicer method to use, but couldn't find one
+                KillCountEquipment(Melon<BloodlinesMod>.Instance.gameManager!.MainUI.KillsText.text, __instance);
+                TimerEquipment(Melon<BloodlinesMod>.Instance.gameManager.SurvivedSeconds, __instance);
+            }
+
+            static void KillCountEquipment(string KillCount, CharacterController characterController)
+            {
+                int kills = int.Parse(KillCount);
+                if (!isCustomCharacter(characterController.CharacterType)) return;
+
+                List<EquipmentModifierJsonModelv0_3> equipment = Melon<BloodlinesMod>.Instance.manager
+                    .characterDict[characterController.CharacterType]
+                    .Skin(Melon<BloodlinesMod>.Instance._skinType)!.EquipmentModifiers;
+
+                if (!equipment.Any()) return;
+
+                foreach (var modifier in equipment)
+                {
+                    if (equipmentUsed.Contains(modifier)) continue;
+                    if (modifier.KillCount == 0) continue;
+                    if (modifier.Level != 0) continue;
+                    if (modifier.Timer != 0) continue;
+                    if (modifier.KillCount >= kills) continue;
+
+                    if (modifier.Accessories.Any())
+                        foreach (var weaponType in modifier.Accessories)
+                        {
+                            Melon<BloodlinesMod>.Instance.gameManager!.AccessoriesFacade.AddAccessory(weaponType, characterController);
+                        }
+                    if (modifier.Weapons.Any())
+                        foreach (var weaponType in modifier.Weapons)
+                        {
+                            Melon<BloodlinesMod>.Instance.gameManager!.AddWeapon(weaponType, characterController);
+                        }
+                    if (modifier.HiddenWeapons.Any())
+                        foreach (var weaponType in modifier.HiddenWeapons)
+                        {
+                            HiddenWeaponLeveler(weaponType, characterController, modifier.AllowMulti);
+                        }
+                    if (modifier.Arcana.Any())
+                        foreach (var arcanaType in modifier.Arcana)
+                        {
+                            ArcanaAdder(arcanaType);
+                        }
+
+                    equipmentUsed.Add(modifier);
+                }
+            }
+            static void TimerEquipment(float TimerCounter, CharacterController characterController)
+            {
+                if (!isCustomCharacter(characterController.CharacterType)) return;
+
+                List<EquipmentModifierJsonModelv0_3> equipment = Melon<BloodlinesMod>.Instance.manager
+                    .characterDict[characterController.CharacterType]
+                    .Skin(Melon<BloodlinesMod>.Instance._skinType)!.EquipmentModifiers;
+
+                if (!equipment.Any()) return;
+
+                foreach (var modifier in equipment)
+                {
+                    if (equipmentUsed.Contains(modifier)) continue;
+                    if (modifier.KillCount != 0) continue;
+                    if (modifier.Level != 0) continue;
+                    if (modifier.Timer == 0) continue;
+                    if (modifier.Timer >= TimerCounter) continue;
+
+                    if (modifier.Accessories.Any())
+                        foreach (var weaponType in modifier.Accessories)
+                        {
+                            Melon<BloodlinesMod>.Instance.gameManager!.AccessoriesFacade.AddAccessory(weaponType, characterController);
+                        }
+                    if (modifier.Weapons.Any())
+                        foreach (var weaponType in modifier.Weapons)
+                        {
+                            Melon<BloodlinesMod>.Instance.gameManager!.AddWeapon(weaponType, characterController);
+                        }
+                    if (modifier.HiddenWeapons.Any())
+                        foreach (var weaponType in modifier.HiddenWeapons)
+                        {
+                            HiddenWeaponLeveler(weaponType, characterController, modifier.AllowMulti);
+                        }
+                    if (modifier.Arcana.Any())
+                        foreach (var arcanaType in modifier.Arcana)
+                        {
+                            ArcanaAdder(arcanaType);
+                        }
+
+                    equipmentUsed.Add(modifier);
+                }
+            }
         }
 
         [HarmonyPatch(typeof(GameManager))]
@@ -301,7 +409,7 @@ namespace Bloodlines
                 if (isCustomCharacter(characterType))
                 {
                     CharacterDataModelWrapper cWrapper = Melon<BloodlinesMod>.Instance.manager.characterDict[characterType];
-                    SkinObjectModelv0_3 skin = cWrapper.Skin(cControl._currentSkinData.currentSkin);
+                    SkinObjectModelv0_3 skin = cWrapper.Skin(Melon<BloodlinesMod>.Instance._skinType);
                     foreach (ArcanaType a in skin.StartingArcana)
                     {
                         ArcanaAdder(a);
@@ -325,6 +433,7 @@ namespace Bloodlines
                 CharacterType cType = __instance.CharacterItem._characterType;
                 if (isCustomCharacter(cType))
                 {
+                    Melon<BloodlinesMod>.Instance._skinType = __instance.CharacterItem.GetCurrentSkinItem().SkinType;
                     CharacterDataModelWrapper cM = getCharacterManager().characterDict[cType];
                     if (cM.Character.CustomPortrait != null || cM.Character.SmallPortrait)
                     {
